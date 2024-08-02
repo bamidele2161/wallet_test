@@ -31,7 +31,7 @@ const UserRegistration = () => {
 
       if (response?.data?.statusCode === 200) {
         toast.success(response?.data?.message);
-        navigate("/login");
+        navigate("/activate", { state: { email: formData?.emailaddress } });
       }
       if (response?.error?.status === 400) {
         toast.error(response?.error?.data?.message);

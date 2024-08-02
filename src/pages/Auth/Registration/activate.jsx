@@ -4,37 +4,47 @@ import { Body, Form, Registration } from "../Registration/styles";
 import InputWithLabel from "../../../components/primaryInput/inputWithLabel";
 import Button from "../../../components/button";
 import AuthLayout from "../../../layout/AuthLayout";
-import { loginSchema } from "./schema";
+import { activateSchema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useAuthenticateUserMutation } from "../../../services/auth";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useActivateUserMutation } from "../../../services/auth";
 import toast from "react-hot-toast";
 import { saveUserInfo } from "../../../store/slice";
 import { store } from "../../../store/store";
 
-const SignIn = () => {
-  const [authenticateUser, userState] = useAuthenticateUserMutation();
+const ActivationCode = () => {
+  const [activateUser, userState] = useActivateUserMutation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(activateSchema),
   });
+
+  console.log(state?.email, "dddd");
 
   const submitForm = async (formData) => {
     try {
-      const response = await authenticateUser(formData);
+      const requiredData = {
+        ...formData,
+        emailAddress: state?.email,
+      };
+
+      const response = await activateUser(requiredData);
+
       if (response?.data?.statusCode === 200) {
         store.dispatch(saveUserInfo(response?.data));
         localStorage.setItem("userInfo", JSON.stringify(response?.data));
-        toast.success("Login successful");
-        navigate("/dashboard");
+        toast.success(response?.data?.message);
+        navigate("/login");
       }
-      if (response?.error?.status === 401) {
-        toast.error(response?.error?.data?.errorMessage);
+      if (response?.data?.statusCode === 250) {
+        toast.error(response?.data?.message);
       }
     } catch (error) {
       console.log(error);
@@ -44,26 +54,17 @@ const SignIn = () => {
   return (
     <AuthLayout>
       <Registration>
-        <h1>Sign In</h1>
+        <h1>Activate</h1>
         <Form onSubmit={handleSubmit(submitForm)}>
           <Body>
             <div>
               <InputWithLabel
-                placeholder="Enter your email address"
-                label="Email"
-                type="email"
-                name="emailAddress"
+                placeholder="Enter code"
+                label="Code"
+                type="text"
+                name="activationCode"
                 register={register}
-                errorMessage={errors.emailAddress?.message}
-              />
-              <InputWithLabel
-                placeholder="Min. of 6 characters"
-                label="Password"
-                type="password"
-                rightText
-                name="password"
-                register={register}
-                errorMessage={errors.password?.message}
+                errorMessage={errors.activationCode?.message}
               />
             </div>
 
@@ -79,4 +80,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ActivationCode;

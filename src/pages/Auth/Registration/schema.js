@@ -12,3 +12,7 @@ export const userRegistrationSchema = yup.object().shape({
   phonenumber: yup.string().required("Enter your phone number"),
   // role: yup.string().required("Enter your role"),
 });
+
+export const activateSchema = yup.object().shape({
+  activationCode: yup.string().min(6).max(8).required("Enter code"),
+});

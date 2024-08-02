@@ -37,8 +37,24 @@ export const authApi = createApi({
         },
       }),
     }),
+
+    //activate user
+    activateUser: builder.mutation({
+      query: (body) => ({
+        url: "/Account/ConfirmActivationCode",
+        method: "POST",
+        body,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }),
+    }),
   }),
 });
 
 //custom hooks
-export const { useRegisterUserMutation, useAuthenticateUserMutation } = authApi;
+export const {
+  useRegisterUserMutation,
+  useAuthenticateUserMutation,
+  useActivateUserMutation,
+} = authApi;
