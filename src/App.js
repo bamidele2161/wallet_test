@@ -1,24 +1,56 @@
-import logo from './logo.svg';
-import './App.css';
+import { Toaster } from "react-hot-toast";
+import "./App.css";
+import AppRouter from "./routes/AppRouter";
+import { store } from "./store/store";
+import { saveUserInfo } from "./store/slice";
 
 function App() {
+  const userInfoJSON = localStorage.getItem("userInfo");
+  const userInfo = userInfoJSON ? JSON.parse(userInfoJSON) : {};
+
+  if (userInfo) {
+    store.dispatch(saveUserInfo(userInfo));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppRouter />
+
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          className: "",
+          style: {
+            margin: "10px",
+            padding: "10px",
+            display: "inline-flex",
+            fontSize: "14px",
+            zIndex: 999999,
+          },
+          duration: 4000,
+          error: {
+            style: {
+              background: "red",
+              color: "white",
+            },
+            iconTheme: {
+              primary: "white",
+              secondary: "red",
+            },
+          },
+          success: {
+            style: {
+              background: "green",
+              color: "white",
+            },
+            iconTheme: {
+              primary: "white",
+              secondary: "green",
+            },
+          },
+        }}
+      />
+    </>
   );
 }
 
