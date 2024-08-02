@@ -25,7 +25,6 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [walletDetails, setWalletDetails] = useState({});
 
-
   const { data } = useGetProfileQuery();
   const [getWallet] = useGetWalletMutation();
 
@@ -51,7 +50,7 @@ const Dashboard = () => {
         <HeaderContent>
           <div>Dashboard</div>
           <BtnWrapper>
-            <Button onClick={handleLogout} title="Logout" />
+            <Button onClick={handleLogout} title="Logout" bg_color={"black"} />
           </BtnWrapper>
         </HeaderContent>
       </Header>

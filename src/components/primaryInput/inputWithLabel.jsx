@@ -21,7 +21,6 @@ const InputWithLabel = ({
   edit,
   error,
   errorMessage,
-  warningMessage,
   rightText,
   leftText,
   leftIcon,
@@ -41,7 +40,6 @@ const InputWithLabel = ({
   disable,
   onChange,
   onBlur,
-  onKeyDown = () => {},
   maxNumber,
   defaultValue,
   value,
@@ -65,22 +63,11 @@ const InputWithLabel = ({
     setActive(bool);
   };
 
-  const handleKeyDown = (e) => {
-    onKeyDown(e);
-    if (e.key === "Enter" && nextElementId) {
-      e.preventDefault();
-      let element = document.getElementById(nextElementId);
-      element.focus();
-    }
-  };
-
   return (
     <Wrapper>
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
-
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
-        {warningMessage ? <WarnMsg>{warningMessage}</WarnMsg> : null}
       </Top>
 
       <InputWrapper
@@ -111,8 +98,6 @@ const InputWithLabel = ({
             disabled={disable}
             max={maxNumber}
             value={value}
-            // onChange={onChange}
-            onKeyDown={handleKeyDown}
             defaultValue={defaultValue}
             {...register(name, { onChange: onChange })}
             {...rest}
@@ -133,7 +118,6 @@ const InputWithLabel = ({
             value={value}
             onChange={onChange}
             onBlur={onBlur}
-            onKeyDown={handleKeyDown}
             {...rest}
           />
         )}
@@ -143,8 +127,6 @@ const InputWithLabel = ({
             <Show>{!show ? "show" : "hide"}</Show>
           </div>
         ) : null}
-
-        {/* {overlayComponent && overlayComponent} */}
       </InputWrapper>
 
       {bottomText ? (

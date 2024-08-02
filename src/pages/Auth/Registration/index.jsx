@@ -1,6 +1,5 @@
 import React from "react";
 import { Body, DoubleGridWrapper, Form, Registration } from "./styles";
-
 import InputWithLabel from "../../../components/primaryInput/inputWithLabel";
 import Button from "../../../components/button";
 import AuthLayout from "../../../layout/AuthLayout";
@@ -26,7 +25,7 @@ const UserRegistration = () => {
     try {
       const requiredData = {
         ...formData,
-        role: 32,
+        role: 32, // hard-coding this for now, I will build a dropdown component for the roles, if I'm still allowed to do that
       };
       const response = await registerNewUser(requiredData);
 

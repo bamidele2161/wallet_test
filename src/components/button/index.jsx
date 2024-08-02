@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { Oval } from "react-loading-icons";
 
 const Button = ({
-  title = "Test",
+  title,
   onClick,
   type,
-  disabled,
   outline,
   bg_color,
   color,
@@ -16,13 +15,8 @@ const Button = ({
 }) => {
   return (
     <ButtonWrapper
-      key="MainButton"
-      initial={{ y: 10, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 10, opacity: 0 }}
       onClick={onClick}
       type={type}
-      disabled={disabled}
       bg_color={bg_color}
       outline={outline}
       color={color}
