@@ -49,6 +49,13 @@ export const authApi = createApi({
         },
       }),
     }),
+
+    getAllRoles: builder.query({
+      query: () => ({
+        url: "/Role/Roles",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -57,4 +64,5 @@ export const {
   useRegisterUserMutation,
   useAuthenticateUserMutation,
   useActivateUserMutation,
+  useGetAllRolesQuery,
 } = authApi;

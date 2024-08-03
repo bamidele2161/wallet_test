@@ -10,7 +10,7 @@ export const userRegistrationSchema = yup.object().shape({
     .required("Enter your email"),
   password: yup.string().min(6).max(15).required("Enter a password"),
   phonenumber: yup.string().required("Enter your phone number"),
-  // role: yup.string().required("Enter your role"),
+  role: yup.string().required("Enter your role"),
 });
 
 export const activateSchema = yup.object().shape({

@@ -7,27 +7,39 @@ import { userRegistrationSchema } from "./schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useRegisterUserMutation } from "../../../services/auth";
+import {
+  useGetAllRolesQuery,
+  useRegisterUserMutation,
+} from "../../../services/auth";
 import toast from "react-hot-toast";
+import DropDown from "../../../components/primaryInput/dropDown";
 
 const UserRegistration = () => {
   const [registerNewUser, userState] = useRegisterUserMutation();
+  const { data } = useGetAllRolesQuery();
   const navigate = useNavigate();
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(userRegistrationSchema),
   });
 
+  const roleList = data?.data?.map((role) => ({
+    value: role?.roleID,
+    label: role?.roleName,
+  }));
+
+  const handleRoleChange = (value) => {
+    let selectedRole = Object.values(value)[0];
+    setValue("role", selectedRole, { shouldValidate: true });
+  };
+
   const submitForm = async (formData) => {
     try {
-      const requiredData = {
-        ...formData,
-        role: 32, // hard-coding this for now, I will build a dropdown component for the roles, if I'm still allowed to do that
-      };
-      const response = await registerNewUser(requiredData);
+      const response = await registerNewUser(formData);
 
       if (response?.data?.statusCode === 200) {
         toast.success(response?.data?.message);
@@ -108,14 +120,14 @@ const UserRegistration = () => {
                   register={register}
                   errorMessage={errors.password?.message}
                 />
-                <InputWithLabel
-                  placeholder="Role"
+                <DropDown
+                  containerStyle={{ margin: 0, marginBottom: "24px" }}
                   label="Role"
-                  type="text"
-                  rightText
-                  name="role"
-                  register={register}
+                  labelStyle="input-label"
+                  options={roleList}
+                  onChange={handleRoleChange}
                   errorMessage={errors.role?.message}
+                  placeholder="Select Role"
                 />
               </DoubleGridWrapper>
             </div>
