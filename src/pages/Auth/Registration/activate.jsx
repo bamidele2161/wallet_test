@@ -26,8 +26,6 @@ const ActivationCode = () => {
     resolver: yupResolver(activateSchema),
   });
 
-  console.log(state?.email, "dddd");
-
   const submitForm = async (formData) => {
     try {
       const requiredData = {
